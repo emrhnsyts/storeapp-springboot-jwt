@@ -24,7 +24,6 @@ public class CategoryController {
 
     @GetMapping("/{categoryId}")
     public CategoryWithProductsResponse getCategory(@PathVariable("categoryId") Long categoryId) {
-        System.out.println("selam");
         return categoryService.getCategory(categoryId);
     }
 
