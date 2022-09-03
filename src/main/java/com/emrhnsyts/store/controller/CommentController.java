@@ -21,7 +21,7 @@ public class CommentController {
     @GetMapping
     public List<CommentResponse> getCommentsByUserIdOrProductId(@RequestParam Optional<Long> userId,
                                                                 @RequestParam Optional<Long> productId) {
-        return commentService.getAllCommentsByProductIdOrUserId(userId,productId);
+        return commentService.getAllCommentsByProductIdOrUserId(userId, productId);
     }
 
     @PostMapping
@@ -41,7 +41,8 @@ public class CommentController {
     }
 
     @PutMapping("/{commentId}")
-    public CommentResponse updateComment(@Valid @RequestBody CommentUpdateRequest commentUpdateRequest, @PathVariable("commentId") Long commentId) {
+    public CommentResponse updateComment(@Valid @RequestBody CommentUpdateRequest commentUpdateRequest
+            , @PathVariable("commentId") Long commentId) {
         return commentService.updateCommentById(commentId, commentUpdateRequest);
     }
 }

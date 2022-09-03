@@ -17,36 +17,36 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final AppUserService appUserService;
-    private final JwtTokenFilter jwtTokenFilter;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final AppUserService appUserService;
+	private final JwtTokenFilter jwtTokenFilter;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(appUserService);
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(appUserService);
+	}
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.cors().disable();
-        http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/comments/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/likes/**").permitAll();
-        http.authorizeRequests().anyRequest().authenticated();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
+		http.cors().disable();
+		http.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/comments/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/v1/likes/**").permitAll();
+		http.authorizeRequests().anyRequest().authenticated();
 
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
-    }
+	}
 }

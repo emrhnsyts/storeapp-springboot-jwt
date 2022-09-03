@@ -22,7 +22,7 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AppUserCreateResponse addAppUser(AppUserCreateRequest appUserCreateRequest){
+    public AppUserCreateResponse addAppUser(AppUserCreateRequest appUserCreateRequest) {
         AppUser appUser = new AppUser();
         appUser.setEmail(appUserCreateRequest.getEmail());
         appUser.setImageUrl(appUserCreateRequest.getImageUrl());
@@ -34,31 +34,30 @@ public class AppUserService implements UserDetailsService {
         return new AppUserCreateResponse(appUserRepository.save(appUser));
     }
 
-    public AppUserResponse updateAppUserPassword(Long appUserId, AppUserPasswordUpdateRequest appUserPasswordUpdateRequest){
+    public AppUserResponse updateAppUserPassword(Long appUserId, AppUserPasswordUpdateRequest appUserPasswordUpdateRequest) {
         AppUser appUser = getAppUserForService(appUserId);
         appUser.setPassword(passwordEncoder.encode(appUserPasswordUpdateRequest.getPassword()));
         return new AppUserResponse(appUserRepository.save(appUser));
     }
 
-    public AppUserResponse updateAppUserEmail(Long appUserId, AppUserEmailUpdateRequest appUserEmailUpdateRequest){
+    public AppUserResponse updateAppUserEmail(Long appUserId, AppUserEmailUpdateRequest appUserEmailUpdateRequest) {
         AppUser appUser = getAppUserForService(appUserId);
         appUser.setEmail(appUserEmailUpdateRequest.getEmail());
         return new AppUserResponse(appUserRepository.save(appUser));
     }
 
-    public void deleteAppUser(Long appUserId){
+    public void deleteAppUser(Long appUserId) {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(appUserId);
-        if (optionalAppUser.isPresent()){
+        if (optionalAppUser.isPresent()) {
             appUserRepository.delete(optionalAppUser.get());
-        }
-        else{
+        } else {
             throw new UserNotFoundException("User not found.");
         }
     }
 
-    public AppUserResponse getAppUser(Long appUserId){
+    public AppUserResponse getAppUser(Long appUserId) {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(appUserId);
-        if (optionalAppUser.isPresent()){
+        if (optionalAppUser.isPresent()) {
             return new AppUserResponse(optionalAppUser.get());
         }
         throw new UserNotFoundException("User not found.");
